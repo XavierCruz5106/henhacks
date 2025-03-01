@@ -95,35 +95,33 @@ export function UserNav() {
             <Tabs defaultValue="all">
               <TabsContent value="all" className="space-y-3 mt-0  pr-4">
                 {notifications.map((notification) => (
-                  <div className="flex items-center space-x-4 rounded-lg border p-3 bg-muted/50">
-                    <div
-                      key={notification.id}
-                      className="flex items-start justify-between space-x-3"
-                    >
-                      <notification.icon
-                        className={`h-5 w-5 ${notification.color}`}
-                      />
-                      <div className="flex-1 space-y-1">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium leading-none">
-                            {notification.title}
-                          </p>
-                          <Badge variant="outline" className="text-xs">
-                            {notification.time}
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {notification.description}
+                  <div
+                    key={notification.id}
+                    className="flex items-start justify-between space-x-3"
+                  >
+                    <notification.icon
+                      className={`h-5 w-5 ${notification.color}`}
+                    />
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium leading-none">
+                          {notification.title}
                         </p>
+                        <Badge variant="outline" className="text-xs">
+                          {notification.time}
+                        </Badge>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label="Delete notification"
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        {notification.description}
+                      </p>
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Delete notification"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
                   </div>
                 ))}
               </TabsContent>
