@@ -29,6 +29,7 @@ export function UserNav() {
     {
       id: 1,
       icon: AlertCircle,
+      iconBg: "bg-destructive/10",
       color: "text-destructive",
       title: "Calculus Exam Reminder",
       time: "1h ago",
@@ -37,6 +38,7 @@ export function UserNav() {
     {
       id: 2,
       icon: Clock,
+      iconBg: "bg-primary/10",
       color: "text-primary",
       title: "Study Session Reminder",
       time: "3h ago",
@@ -45,6 +47,7 @@ export function UserNav() {
     {
       id: 3,
       icon: CheckCircle2,
+      iconBg: "bg-green-500/10",
       color: "text-green-500",
       title: "Assignment Completed",
       time: "Yesterday",
@@ -53,6 +56,7 @@ export function UserNav() {
     {
       id: 4,
       icon: BookOpen,
+      iconBg: "bg-primary/10",
       color: "text-primary",
       title: "New Assignment Added",
       time: "2 days ago",
@@ -99,9 +103,12 @@ export function UserNav() {
                     key={notification.id}
                     className="flex items-center space-x-4 rounded-lg border p-3 transition-colors hover:bg-muted/50"
                   >
+                    <div
+                      className={`rounded-full p-2 flex-shrink-0 ${notification.iconBg}`}>
                     <notification.icon
                       className={`h-5 w-5 ${notification.color}`}
                     />
+                    </div>
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium leading-none">
