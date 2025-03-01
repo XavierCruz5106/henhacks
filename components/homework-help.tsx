@@ -1,13 +1,45 @@
 "use client"
 
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { MessageSquare, Camera, Mic, Send, ImageIcon, FileText, ThumbsUp, ThumbsDown } from "lucide-react"
+import { on } from "events"
 
 export function HomeworkHelp() {
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [chatHistory, setChatHistory] = useState<{ question: string }[]>([]) 
+
+  const genAI = new GoogleGenerativeAI("AIzaSyDqa80UWZClAHQ8Y-6i5ljad_kxrtno1DM");
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+  const prompt = "Explain how AI works";
+  async function handleGenerateContent() {
+    const result = await model.generateContent(prompt);
+    console.log(result);
+  }
+
+  const sendMessage = () => {
+    if (!message) return
+
+    setLoading(true)
+    setTimeout(() => {
+      setChatHistory([...chatHistory, { question: message }])
+      setLoading(false)
+      setMessage("")
+    }, 1000)
+  }
+
+  const handelOnClick = () => {
+    if (!message) alert("Please enter a message")
+    handleGenerateContent()
+    alert("Message sent")
+    sendMessage()
+  }
+
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
@@ -26,15 +58,25 @@ export function HomeworkHelp() {
                 Hello! I'm your AI homework assistant. How can I help you today?
               </div>
             </div>
-            <div className="flex items-start gap-3 justify-end">
+            {chatHistory.map((chat: { question: string }, index: number) => (
+              <div key={index} className="flex items-start gap-3 justify-end">
+                <div className="rounded-lg bg-primary text-primary-foreground p-3 text-sm">
+                  {chat.question}
+                </div>
+                <div className="rounded-full bg-primary p-2 h-8 w-8 flex items-center justify-center">
+                  <MessageSquare className="h-4 w-4 text-primary-foreground" />
+                </div>
+              </div>
+            ))}
+            {/* <div className="flex items-start gap-3 justify-end">
               <div className="rounded-lg bg-primary text-primary-foreground p-3 text-sm">
                 I need help with a calculus problem about finding the derivative of f(x) = x^3 * sin(x)
               </div>
               <div className="rounded-full bg-primary p-2 h-8 w-8 flex items-center justify-center">
                 <MessageSquare className="h-4 w-4 text-primary-foreground" />
               </div>
-            </div>
-            <div className="flex items-start gap-3">
+            </div> */}
+            {/* <div className="flex items-start gap-3">
               <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
                 <MessageSquare className="h-4 w-4 text-primary" />
               </div>
@@ -65,7 +107,7 @@ export function HomeworkHelp() {
                   </Button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </CardContent>
         <CardFooter className="flex items-center gap-2 pt-4">
@@ -84,7 +126,7 @@ export function HomeworkHelp() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <Button size="icon">
+          <Button size="icon" onClick={handelOnClick}>
             <Send className="h-4 w-4" />
           </Button>
         </CardFooter>
