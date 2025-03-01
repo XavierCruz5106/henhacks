@@ -1,18 +1,9 @@
 import type React from "react"
 import Link from "next/link"
 import {
-  GraduationCap,
-  LayoutDashboard,
-  Calendar,
-  Bell,
-  BookOpen,
-  HelpCircle,
-  Focus,
-  Users,
-  FileText,
+  GraduationCap
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 
 interface MainNavProps extends React.HTMLAttributes<HTMLElement> {
   setOpen?: (open: boolean) => void
