@@ -2,7 +2,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, BookOpen, CheckCircle, BrainCircuit, Users, FileText, Focus, ArrowRight } from "lucide-react"
 
-export function Overview({ setActiveTab }) {
+interface OverviewProps {
+  setActiveTab: (tabId: string) => void;
+}
+
+export function Overview({ setActiveTab }: OverviewProps) {
   const features = [
     {
       id: "planner",
@@ -93,4 +97,3 @@ export function Overview({ setActiveTab }) {
     </div>
   )
 }
-
