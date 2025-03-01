@@ -97,7 +97,7 @@ export function UserNav() {
                 {notifications.map((notification) => (
                   <div
                     key={notification.id}
-                    className="flex items-start justify-between space-x-3"
+                    className="flex items-center space-x-4 rounded-lg border p-3 transition-colors hover:bg-muted/50"
                   >
                     <notification.icon
                       className={`h-5 w-5 ${notification.color}`}
