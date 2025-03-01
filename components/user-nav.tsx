@@ -138,7 +138,7 @@ export function UserNav() {
           >
             <Avatar className="h-9 w-9">
               <AvatarImage src="/placeholder.svg" alt="@student" />
-              <AvatarFallback>ST</AvatarFallback>
+              <AvatarFallback>AJ</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
