@@ -1,24 +1,24 @@
 "use client"
 
-import { useState } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import { Menu } from "lucide-react"
-import { MainNav } from "@/components/main-nav"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { cn } from "@/lib/utils"
+import { Menu, LayoutDashboard, Calendar, Bell, BookOpen, HelpCircle, Focus, Users, FileText } from "lucide-react"
+import { useState } from "react"
 
-export function MobileNav() {
+export function MobileNav({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (tab: string) => void }) {
   const [open, setOpen] = useState(false)
 
-  const tabs = [
-    { id: "overview", label: "Overview" },
-    { id: "planner", label: "Study Planner" },
-    { id: "notifications", label: "Notifications" },
-    { id: "study", label: "Study Sessions" },
-    { id: "homework", label: "Homework Help" },
-    { id: "focus", label: "Focus Mode" },
-    { id: "collaboration", label: "Collaboration" },
-    { id: "notes", label: "Notes Organizer" },
+  const routes = [
+    { label: "Overview", icon: <LayoutDashboard className="mr-2 h-4 w-4" />, value: "overview" },
+    { label: "Study Planner", icon: <Calendar className="mr-2 h-4 w-4" />, value: "planner" },
+    { label: "Notifications", icon: <Bell className="mr-2 h-4 w-4" />, value: "notifications" },
+    { label: "Study Sessions", icon: <BookOpen className="mr-2 h-4 w-4" />, value: "study" },
+    { label: "Homework Help", icon: <HelpCircle className="mr-2 h-4 w-4" />, value: "homework" },
+    { label: "Focus Mode", icon: <Focus className="mr-2 h-4 w-4" />, value: "focus" },
+    { label: "Collaboration", icon: <Users className="mr-2 h-4 w-4" />, value: "collaboration" },
+    { label: "Notes Organizer", icon: <FileText className="mr-2 h-4 w-4" />, value: "notes" },
   ]
 
   return (
@@ -30,13 +30,24 @@ export function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[240px] sm:w-[280px]">
-        <MainNav className="mx-4 my-4" />
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
           <div className="flex flex-col space-y-2 px-4">
-            {tabs.map((tab) => (
-              <Button key={tab.id} variant="ghost" className="w-full justify-start" onClick={() => setOpen(false)}>
+            {routes.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => {
+                  setActiveTab(tab.value)
+                  setOpen(false) // Close mobile nav
+                }}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "sm" }),
+                  "justify-start w-full",
+                  activeTab === tab.value ? "bg-accent text-white" : ""
+                )}
+              >
+                {tab.icon}
                 {tab.label}
-              </Button>
+              </button>
             ))}
           </div>
         </ScrollArea>
@@ -44,4 +55,3 @@ export function MobileNav() {
     </Sheet>
   )
 }
-

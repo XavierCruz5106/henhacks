@@ -19,8 +19,6 @@ interface MainNavProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export function MainNav({ className, setOpen }: MainNavProps) {
-  
-
   return (
     <div className={cn("flex items-center", className)}>
       <Link href="/" className="mr-6 flex items-center space-x-2" onClick={() => setOpen?.(false)}>
@@ -32,4 +30,3 @@ export function MainNav({ className, setOpen }: MainNavProps) {
     </div>
   )
 }
-

@@ -14,19 +14,20 @@ import { NotesOrganizer } from "@/components/notes-organizer"
 import { Overview } from "@/components/overview"
 import { MobileNav } from "@/components/mobile-nav"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { LayoutDashboard, Calendar, Bell, BookOpen, HelpCircle, Focus, Users, FileText } from "lucide-react"
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview")
 
   const tabs = [
-    { id: "overview", label: "Overview" },
-    { id: "planner", label: "Study Planner" },
-    { id: "notifications", label: "Notifications" },
-    { id: "study", label: "Study Sessions" },
-    { id: "homework", label: "Homework Help" },
-    { id: "focus", label: "Focus Mode" },
-    { id: "collaboration", label: "Collaboration" },
-    { id: "notes", label: "Notes Organizer" },
+    { label: "Overview", icon: <LayoutDashboard className="mr-2 h-4 w-4" />, value: "overview" },
+    { label: "Study Planner", icon: <Calendar className="mr-2 h-4 w-4" />, value: "planner" },
+    { label: "Notifications", icon: <Bell className="mr-2 h-4 w-4" />, value: "notifications" },
+    { label: "Study Sessions", icon: <BookOpen className="mr-2 h-4 w-4" />, value: "study" },
+    { label: "Homework Help", icon: <HelpCircle className="mr-2 h-4 w-4" />, value: "homework" },
+    { label: "Focus Mode", icon: <Focus className="mr-2 h-4 w-4" />, value: "focus" },
+    { label: "Collaboration", icon: <Users className="mr-2 h-4 w-4" />, value: "collaboration" },
+    { label: "Notes Organizer", icon: <FileText className="mr-2 h-4 w-4" />, value: "notes" },
   ]
 
   return (
@@ -34,7 +35,7 @@ export default function Dashboard() {
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center">
           <MainNav className="hidden md:flex" />
-          <MobileNav />
+          <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} />
           <div className="ml-auto flex items-center space-x-4">
             <UserNav />
           </div>
@@ -47,12 +48,13 @@ export default function Dashboard() {
             <div className="space-y-1">
               {tabs.map((tab) => (
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
                   className={`w-full flex items-center rounded-md px-2 py-1 text-sm font-medium hover:bg-accent hover:text-accent-foreground ${
-                    activeTab === tab.id ? "bg-accent" : ""
+                    activeTab === tab.value ? "bg-accent text-white" : ""
                   }`}
                 >
+                  {tab.icon}
                   {tab.label}
                 </button>
               ))}
@@ -62,7 +64,7 @@ export default function Dashboard() {
         <main className="flex w-full flex-col overflow-hidden">
           <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
-              <h2 className="text-3xl font-bold tracking-tight">{tabs.find((tab) => tab.id === activeTab)?.label}</h2>
+              <h2 className="text-3xl font-bold tracking-tight">{tabs.find((tab) => tab.value === activeTab)?.label}</h2>
             </div>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
               <TabsContent value="overview" className="space-y-4">
@@ -96,4 +98,3 @@ export default function Dashboard() {
     </div>
   )
 }
-
