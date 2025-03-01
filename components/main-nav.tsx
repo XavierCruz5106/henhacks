@@ -23,7 +23,7 @@ export function MainNav({ className, setOpen }: MainNavProps) {
     <div className={cn("flex items-center", className)}>
       <Link href="/" className="mr-6 flex items-center space-x-2" onClick={() => setOpen?.(false)}>
         <GraduationCap className="h-6 w-6 text-primary" />
-        <span className="font-bold inline-block">AI School Companion</span>
+        <span className="font-bold inline-block">Quester</span>
       </Link>
       <nav className="flex gap-2 md:gap-1 md:flex-col lg:flex-row">
       </nav>

@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { Menu, LayoutDashboard, Calendar, Bell, BookOpen, HelpCircle, Focus, Users, FileText } from "lucide-react"
 import { useState } from "react"
+import { MainNav } from "./main-nav"
 
 export function MobileNav({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (tab: string) => void }) {
   const [open, setOpen] = useState(false)
@@ -32,6 +33,7 @@ export function MobileNav({ activeTab, setActiveTab }: { activeTab: string; setA
       <SheetContent side="left" className="w-[240px] sm:w-[280px]">
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
           <div className="flex flex-col space-y-2 px-4">
+            <MainNav className="md:flex mb-6" />
             {routes.map((tab) => (
               <button
                 key={tab.value}
