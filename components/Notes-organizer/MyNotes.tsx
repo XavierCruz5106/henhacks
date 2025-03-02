@@ -19,7 +19,7 @@ const MyNotes = () => {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch("/api/notes/get-all");
+      const response = await fetch("/api/notes/get-all-users");
       if (!response.ok) throw new Error("Failed to fetch notes");
 
       const data = await response.json();

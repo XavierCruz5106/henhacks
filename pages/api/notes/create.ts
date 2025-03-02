@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { Note } from '@/lib/types';
+import { getAuth } from '@clerk/nextjs/server';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Only allow POST requests
@@ -10,7 +11,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    console.log(req.body)
+    const { userId } = getAuth(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
     const { title, content, description, tag = "Unlabled", fileId = null } = req.body;
 
     // Validate required fields
@@ -29,6 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       content,
       description,
       tag,
+      userId,
       fileId: fileId ? new ObjectId(fileId) : null,
       createdAt: new Date(),
       updatedAt: new Date()

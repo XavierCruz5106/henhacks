@@ -6,6 +6,7 @@ export interface Note {
   content: string;
   description?: string;
   tag: string;
+  userId: string;
   fileId?: ObjectId | null;
   createdAt: Date;
   updatedAt?: Date;
@@ -13,7 +14,7 @@ export interface Note {
 
 export interface Notification {
   _id?: ObjectId;
-  userId: ObjectId;
+  userId: string;
   message: string;
   read: boolean;
   createdAt: Date;
