@@ -4,12 +4,13 @@ import { useState, useRef, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { MessageSquare, Camera, Send, ImageIcon, FileText } from "lucide-react"
+import { MessageSquare, Camera, Send, ImageIcon, FileText, Reply } from "lucide-react"
 
 export function HomeworkHelp() {
   const [message, setMessage] = useState("")
-  const [chatHistory, setChatHistory] = useState<Array<{ type: string, content: string, timestamp: string }>>([])
+  const [chatHistory, setChatHistory] = useState<Array<{ type: string, content: string, timestamp: string, replyTo?: string }>>([])
   const [isProcessing, setIsProcessing] = useState(false)
+  const [replyingTo, setReplyingTo] = useState<string | null>(null) // Track which message is being replied to
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Add initial chatbot message when the component mounts
@@ -34,7 +35,7 @@ export function HomeworkHelp() {
       setChatHistory(prev => [...prev, {
         type: 'assistant',
         content: "🚫 Error: I couldn't process the image. Please try again or upload a clearer image.",
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString() // Add timestamp
       }])
     }
     setIsProcessing(false)
@@ -47,32 +48,40 @@ export function HomeworkHelp() {
     const newHistory = [...chatHistory, {
       type: 'user',
       content: message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      replyTo: replyingTo || undefined // Add replyTo if replying to a message
     }]
     setChatHistory(newHistory)
     setMessage('')
+    setReplyingTo(null) // Reset reply state
     
     try {
       setIsProcessing(true)
       
       // Simulate AI response (replace with actual logic if needed)
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate delay
+      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate delay
       const text = "Simulated AI response" // Replace with actual AI logic
 
       // Add AI response to history
       setChatHistory([...newHistory, {
         type: 'assistant',
         content: text,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        replyTo: replyingTo || undefined // Add replyTo if replying to a message
       }])
     } catch (error) {
       console.error('AI Error:', error)
-      setChatHistory([...newHistory, {
+      setChatHistory([...newHistory, { 
         type: 'error',
-        content: "Sorry, I'm having trouble helping right now. Please try again later."
+        content: "Sorry, I'm having trouble helping right now. Please try again later.",
+        timestamp: new Date().toISOString() // Add timestamp
       }])
     }
     setIsProcessing(false)
+  }
+
+  const handleReply = (messageId: string) => {
+    setReplyingTo(messageId) // Set the message being replied to
   }
 
   return (
@@ -99,14 +108,21 @@ export function HomeworkHelp() {
                       ? 'bg-destructive text-destructive-foreground'
                       : 'bg-muted'
                 }`}>
+                  {msg.replyTo && (
+                    <div className="text-xs text-muted-foreground mb-2">
+                      Replying to: {chatHistory.find(m => m.timestamp === msg.replyTo)?.content}
+                    </div>
+                  )}
                   {msg.content}
                   {msg.type === 'assistant' && (
                     <div className="flex items-center justify-end space-x-2 mt-2">
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <MessageSquare className="h-3 w-3" /> {/* Replaced ThumbsUp */}
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <Camera className="h-3 w-3" /> {/* Replaced ThumbsDown */}
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-6 w-6"
+                        onClick={() => handleReply(msg.timestamp)} // Add reply button
+                      >
+                        <Reply className="h-3 w-3" />
                       </Button>
                     </div>
                   )}
@@ -124,30 +140,22 @@ export function HomeworkHelp() {
                   <MessageSquare className="h-4 w-4 text-primary" />
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
-                  Analyzing your question...
+                  <div className="flex items-center space-x-2">
+                    <span>Thinking</span>
+                    <div className="flex space-x-1">
+                      <div className="h-1 w-1 bg-primary rounded-full animate-bounce delay-100"></div>
+                      <div className="h-1 w-1 bg-primary rounded-full animate-bounce delay-200"></div>
+                      <div className="h-1 w-1 bg-primary rounded-full animate-bounce delay-300"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
           </div>
         </CardContent>
         <CardFooter className="flex items-center gap-2 pt-4">
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0])}
-            className="hidden"
-          />
-          <Button 
-            variant="outline" 
-            size="icon"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isProcessing}
-          >
-            <Camera className="h-4 w-4" />
-          </Button>
           <Textarea
-            placeholder="Ask your question..."
+            placeholder={replyingTo ? "Reply to this message..." : "Ask your question..."}
             className="flex-1 min-h-10"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -176,6 +184,13 @@ export function HomeworkHelp() {
               <p className="text-sm text-muted-foreground text-center">
                 Take a photo or upload an image of your homework
               </p>
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0])}
+                className="hidden"
+              />
               <Button 
                 className="mt-4"
                 onClick={() => fileInputRef.current?.click()}
