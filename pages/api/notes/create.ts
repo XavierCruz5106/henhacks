@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    console.log(req.body)
     const { title, content, description, tag = "Unlabled", fileId = null } = req.body;
 
     // Validate required fields
@@ -25,8 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Create the note document
     const note: Note = {
       title,
-      description,
       content,
+      description,
       tag,
       fileId: fileId ? new ObjectId(fileId) : null,
       createdAt: new Date(),

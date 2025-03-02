@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ error: 'Note not found' });
     }
 
-    res.status(200).json({ message: 'Note updated successfully' });
+    res.status(200).json({ message: 'Note updated successfully', noteId: id, note: {...updateFields } });
   } catch (error) {
     console.error('Update note error:', error);
     res.status(500).json({
