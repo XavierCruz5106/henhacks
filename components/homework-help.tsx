@@ -1,44 +1,49 @@
 "use client"
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai"
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { MessageSquare, Camera, Mic, Send, ImageIcon, FileText, ThumbsUp, ThumbsDown } from "lucide-react"
-import { on } from "events"
+import { text } from "stream/consumers"
 
 export function HomeworkHelp() {
   const [message, setMessage] = useState("")
   const [loading, setLoading] = useState(false)
-  const [chatHistory, setChatHistory] = useState<{ question: string }[]>([]) 
-
+  const [chatHistory, setChatHistory] = useState<{ role: string, text: string }[]>([
+    { role: "model", text: "Hello! I'm your AI homework assistant. How can I help you today?" },
+  ]);
   const genAI = new GoogleGenerativeAI("AIzaSyDqa80UWZClAHQ8Y-6i5ljad_kxrtno1DM");
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = "Explain how AI works";
-  async function handleGenerateContent() {
-    const result = await model.generateContent(prompt);
-    console.log(result);
-  }
+  const handelOnClick = async () => {
+    if (!message) {
+      alert("Please enter a message");
+      return;
+    }
 
-  const sendMessage = () => {
-    if (!message) return
+    setLoading(true);
+    const newUserMessage = { role: "user", text: message };
+    setChatHistory((prevChatHistory) => [...prevChatHistory, newUserMessage]);
+    setMessage("");
 
-    setLoading(true)
-    setTimeout(() => {
-      setChatHistory([...chatHistory, { question: message }])
-      setLoading(false)
-      setMessage("")
-    }, 1000)
-  }
-
-  const handelOnClick = () => {
-    if (!message) alert("Please enter a message")
-    handleGenerateContent()
-    alert("Message sent")
-    sendMessage()
-  }
+    try {
+      const result = await model.generateContent(message);
+      if (result.response.candidates) {
+        const content =  {role: "model", text: result.response.candidates[0].content.parts[0].text.toString()};
+        setChatHistory((prevChatHistory) => [...prevChatHistory, content]);
+      } else {
+        console.error("No response candidates");
+        // Handle no response candidates.
+      }
+    } catch (error) {
+      console.error("API error:", error);
+      // Handle API error.
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -50,64 +55,27 @@ export function HomeworkHelp() {
         </CardHeader>
         <CardContent className="p-0">
           <div className="border-t border-b h-[400px] overflow-y-auto p-4 space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
-                <MessageSquare className="h-4 w-4 text-primary" />
+            
+            {chatHistory.map((chat: { role: string , text: string }, index: number) => (
+              chat.role === "model" ?
+              <div key={index} className="flex items-start gap-3">
+                <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                </div>
+                <div className="rounded-lg bg-muted p-3 text-sm">
+                  {chat.text}
+                </div>
               </div>
-              <div className="rounded-lg bg-muted p-3 text-sm">
-                Hello! I'm your AI homework assistant. How can I help you today?
-              </div>
-            </div>
-            {chatHistory.map((chat: { question: string }, index: number) => (
+              :
               <div key={index} className="flex items-start gap-3 justify-end">
                 <div className="rounded-lg bg-primary text-primary-foreground p-3 text-sm">
-                  {chat.question}
+                  {chat.text}
                 </div>
                 <div className="rounded-full bg-primary p-2 h-8 w-8 flex items-center justify-center">
                   <MessageSquare className="h-4 w-4 text-primary-foreground" />
                 </div>
               </div>
             ))}
-            {/* <div className="flex items-start gap-3 justify-end">
-              <div className="rounded-lg bg-primary text-primary-foreground p-3 text-sm">
-                I need help with a calculus problem about finding the derivative of f(x) = x^3 * sin(x)
-              </div>
-              <div className="rounded-full bg-primary p-2 h-8 w-8 flex items-center justify-center">
-                <MessageSquare className="h-4 w-4 text-primary-foreground" />
-              </div>
-            </div> */}
-            {/* <div className="flex items-start gap-3">
-              <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
-                <MessageSquare className="h-4 w-4 text-primary" />
-              </div>
-              <div className="space-y-3">
-                <div className="rounded-lg bg-muted p-3 text-sm">
-                  To find the derivative of f(x) = x³ * sin(x), we need to use the product rule:
-                  <br />
-                  <br />
-                  If f(x) = g(x) * h(x), then f'(x) = g'(x) * h(x) + g(x) * h'(x)
-                  <br />
-                  <br />
-                  Let's set g(x) = x³ and h(x) = sin(x)
-                  <br />
-                  <br />
-                  g'(x) = 3x²
-                  <br />
-                  h'(x) = cos(x)
-                  <br />
-                  <br />
-                  So, f'(x) = 3x² * sin(x) + x³ * cos(x)
-                </div>
-                <div className="flex items-center justify-end space-x-2">
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <ThumbsUp className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <ThumbsDown className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div> */}
           </div>
         </CardContent>
         <CardFooter className="flex items-center gap-2 pt-4">
