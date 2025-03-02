@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react"; // Import useState
 import { useUser, UserButton, SignedOut, SignInButton, SignUpButton, useClerk } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -23,11 +24,15 @@ import {
   Trash,
 } from "lucide-react";
 import { TabsContent, Tabs } from "@/components/ui/tabs";
+import Dialog from './ui/dialog';
 
 export function UserNav() {
   const { setTheme, theme } = useTheme();
   const { user, isSignedIn } = useUser();
   const { signOut } = useClerk();
+
+  // State for controlling the settings modal
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleLogOut = async () => {
     await signOut();
@@ -41,6 +46,7 @@ export function UserNav() {
     {
       id: 1,
       icon: AlertCircle,
+      iconBg: "bg-destructive/10",
       color: "text-destructive",
       title: "Calculus Exam Reminder",
       time: "1h ago",
@@ -49,6 +55,7 @@ export function UserNav() {
     {
       id: 2,
       icon: Clock,
+      iconBg: "bg-primary/10",
       color: "text-primary",
       title: "Study Session Reminder",
       time: "3h ago",
@@ -57,6 +64,7 @@ export function UserNav() {
     {
       id: 3,
       icon: CheckCircle2,
+      iconBg: "bg-green-500/10",
       color: "text-green-500",
       title: "Assignment Completed",
       time: "Yesterday",
@@ -65,6 +73,7 @@ export function UserNav() {
     {
       id: 4,
       icon: BookOpen,
+      iconBg: "bg-primary/10",
       color: "text-primary",
       title: "New Assignment Added",
       time: "2 days ago",
@@ -111,9 +120,12 @@ export function UserNav() {
                     key={notification.id}
                     className="flex items-center space-x-4 rounded-lg border p-3 transition-colors hover:bg-muted/50"
                   >
+                    <div
+                      className={`rounded-full p-2 flex-shrink-0 ${notification.iconBg}`}>
                     <notification.icon
                       className={`h-5 w-5 ${notification.color}`}
                     />
+                    </div>
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium leading-none">
@@ -167,7 +179,7 @@ export function UserNav() {
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsSettingsOpen(true)}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
@@ -179,6 +191,13 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Dialog for settings */}
+      <Dialog isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
+        <div className="space-y-4">
+          <p>Settings options go here...</p>
+        </div>
+      </Dialog>
     </div>
   );
 }
