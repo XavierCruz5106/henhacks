@@ -47,6 +47,29 @@
     --input: 36 33% 20%;
     --ring: 36 33% 70%;
   }
+
+  .neon {
+    --background: 0 100% 20%;
+    --foreground: 0 100% 100%;
+    --card: 0 100% 30%;
+    --card-foreground: 0 100% 100%;
+    --popover: 0 100% 15%;
+    --popover-foreground: 0 100% 100%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 60 100% 70%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 200 100% 50%;
+    --muted-foreground: 0 0% 80%;
+    --accent: 280 100% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 80%;
+    --input: 0 0% 80%;
+    --ring: 180 100% 30%;
+    --radius: 1rem;
+  }
 }
 
 @layer base {
