@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Search, Calendar, Clock, BookOpen, MessageSquare, Video, Plus } from "lucide-react"
+import StudyBuddies from "./StudyBuddies"
 
 export function Collaboration() {
   return (
@@ -117,84 +118,7 @@ export function Collaboration() {
                 </Button>
               </div>
               <div className="space-y-4">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center space-x-4">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <CardTitle className="text-base">Jessica Davis</CardTitle>
-                        <CardDescription>Chemistry & Biology</CardDescription>
-                      </div>
-                      <div className="ml-auto flex items-center">
-                        <Badge variant="outline" className="mr-2">
-                          95% Match
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Pre-med student looking for study partners for Organic Chemistry and Biology.
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <Badge variant="secondary">Chemistry 110</Badge>
-                      <Badge variant="secondary">Biology 101</Badge>
-                      <Badge variant="secondary">Organic Chemistry</Badge>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline" size="sm">
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Message
-                    </Button>
-                    <Button size="sm">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Buddy
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Card>
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center space-x-4">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback>MT</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <CardTitle className="text-base">Michael Thompson</CardTitle>
-                        <CardDescription>Physics & Calculus</CardDescription>
-                      </div>
-                      <div className="ml-auto flex items-center">
-                        <Badge variant="outline" className="mr-2">
-                          87% Match
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Engineering student looking for study partners for Physics and Calculus courses.
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <Badge variant="secondary">Physics 202</Badge>
-                      <Badge variant="secondary">Calculus 101</Badge>
-                      <Badge variant="secondary">Linear Algebra</Badge>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline" size="sm">
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Message
-                    </Button>
-                    <Button size="sm">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Buddy
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <StudyBuddies />
               </div>
             </TabsContent>
             <TabsContent value="sessions" className="space-y-4 pt-4">
@@ -287,4 +211,3 @@ export function Collaboration() {
     </div>
   )
 }
-

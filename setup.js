@@ -4,6 +4,42 @@ require('dotenv').config(); // Load environment variables from .env file
 
 async function createCollections(db) {
   try {
+
+    await db.createCollection('messages', {
+      validator: {
+        $jsonSchema: {
+          bsonType: 'object',
+          required: ['senderId', 'receiverId', 'content', 'timestamp', 'status', 'userId'],
+          properties: {
+            senderId: {
+              bsonType: 'string',
+              description: 'Senders ID of the message',
+            },
+            receiverId: {
+              bsonType: 'string',
+              description: 'Receivers ID of the message',
+            },
+            content: {
+              bsonType: 'string',
+              description: 'Content of the message',
+            },
+            timestamp: {
+              bsonType: 'date',
+              description: 'Timestamp of the message',
+            },
+            status: {
+              bsonType: 'string',
+              description: 'Status of the message',
+            },
+            userId: {
+              bsonType: 'string',
+              description: 'ID of the user who created the note',
+            },
+          },
+        },
+      },
+    });
+
     // Create notes collection
     await db.createCollection('notes', {
       validator: {
