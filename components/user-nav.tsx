@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser, UserButton, SignedOut, SignInButton, SignUpButton, useClerk } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,10 +26,22 @@ import { TabsContent, Tabs } from "@/components/ui/tabs";
 
 export function UserNav() {
   const { setTheme, theme } = useTheme();
+  const { user, isSignedIn } = useUser();
+  const { signOut } = useClerk();
+
+  const handleLogOut = async () => {
+    await signOut();
+  };
+
+  if (!isSignedIn) {
+    return null; // Optionally handle the case when the user is not signed in
+  }
+
   const notifications = [
     {
       id: 1,
       icon: AlertCircle,
+      iconBg: "bg-destructive/10",
       color: "text-destructive",
       title: "Calculus Exam Reminder",
       time: "1h ago",
@@ -37,6 +50,7 @@ export function UserNav() {
     {
       id: 2,
       icon: Clock,
+      iconBg: "bg-primary/10",
       color: "text-primary",
       title: "Study Session Reminder",
       time: "3h ago",
@@ -45,6 +59,7 @@ export function UserNav() {
     {
       id: 3,
       icon: CheckCircle2,
+      iconBg: "bg-green-500/10",
       color: "text-green-500",
       title: "Assignment Completed",
       time: "Yesterday",
@@ -53,6 +68,7 @@ export function UserNav() {
     {
       id: 4,
       icon: BookOpen,
+      iconBg: "bg-primary/10",
       color: "text-primary",
       title: "New Assignment Added",
       time: "2 days ago",
@@ -99,9 +115,12 @@ export function UserNav() {
                     key={notification.id}
                     className="flex items-center space-x-4 rounded-lg border p-3 transition-colors hover:bg-muted/50"
                   >
+                    <div
+                      className={`rounded-full p-2 flex-shrink-0 ${notification.iconBg}`}>
                     <notification.icon
                       className={`h-5 w-5 ${notification.color}`}
                     />
+                    </div>
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium leading-none">
@@ -137,18 +156,16 @@ export function UserNav() {
             aria-label="User menu"
           >
             <Avatar className="h-9 w-9">
-              <AvatarImage src="/placeholder.svg" alt="@student" />
-              <AvatarFallback>AJ</AvatarFallback>
+              <AvatarImage src={user.imageUrl || "/placeholder.svg"} alt={user.firstName!} />
+              <AvatarFallback>{user.firstName?.[0]}{user.lastName?.[0]}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Alex Johnson</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                alex.johnson@university.edu
-              </p>
+              <p className="text-sm font-medium leading-none">{user.firstName} {user.lastName}</p>
+              <p className="text-xs leading-none text-muted-foreground">{user.primaryEmailAddress?.emailAddress}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -163,7 +180,7 @@ export function UserNav() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogOut}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>
