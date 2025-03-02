@@ -47,6 +47,41 @@ async function createCollections(db) {
       },
     });
 
+    await db.createCollection('transcribed_notes', {
+      validator: {
+        $jsonSchema: {
+          bsonType: 'object',
+          required: ['title', 'content', 'createdAt', 'userId'],
+          properties: {
+            title: {
+              bsonType: 'string',
+              description: 'Title of the note',
+            },
+            content: {
+              bsonType: 'string',
+              description: 'Content of the note',
+            },
+            tag: {
+              bsonType: 'string',
+              description: 'Tags for the note',
+            },
+            createdAt: {
+              bsonType: 'date',
+              description: 'Creation date of the note',
+            },
+            updatedAt: {
+              bsonType: 'date',
+              description: 'Last update date of the note',
+            },
+            userId: {
+              bsonType: 'string',
+              description: 'ID of the user who created the note',
+            },
+          },
+        },
+      },
+    });
+
     // Create notifications collection
     await db.createCollection('notifications', {
       validator: {
