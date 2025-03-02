@@ -1,31 +1,55 @@
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, BookOpen, Calendar, Edit } from "lucide-react"
-import { useState, useEffect } from "react"
-
+import { useState, useEffect } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, BookOpen, Calendar, Edit } from "lucide-react";
+import NoteModal from "../modals/ViewNoteModal";
+import EditNoteModal from "../modals/EditNoteModal";
 
 const MyNotes = () => {
   const [notes, setNotes] = useState<any[]>([]);
+  const [selectedNote, setSelectedNote] = useState<any | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await fetch('/api/notes/get-all');
-        if (!response.ok) throw new Error('Failed to fetch notes');
+        const response = await fetch("/api/notes/get-all");
+        if (!response.ok) throw new Error("Failed to fetch notes");
 
         const data = await response.json();
-        setNotes(data.notes);  // Update state with fetched notes
-        console.log(data.notes);
+        setNotes(data.notes);
       } catch (error) {
-        console.error('Error fetching notes:', error);
+        console.error("Error fetching notes:", error);
       }
     };
 
-    fetchNotes();  // Call fetch function when component mounts
-  }, []);  // Empty dependency array to run the effect only once on mount
+    fetchNotes();
+  }, []);
 
+  const openViewModal = (note: any) => {
+    setSelectedNote(note);
+    setIsViewModalOpen(true);
+  };
+
+  const openEditModal = (note: any) => {
+    setSelectedNote(note);
+    setIsEditModalOpen(true);
+  };
+
+  const closeModals = () => {
+    setIsViewModalOpen(false);
+    setIsEditModalOpen(false);
+    setSelectedNote(null);
+  };
+
+  const handleSave = (updatedNote: any) => {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => (note._id === updatedNote._id ? updatedNote : note))
+    );
+  };
 
   return (
     <div className="space-y-4 pt-4">
@@ -49,16 +73,14 @@ const MyNotes = () => {
               <CardTitle className="text-base">{note.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground line-clamp-3">
-                {note.description}
-              </p>
+              <p className="text-sm text-muted-foreground line-clamp-3">{note.description}</p>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => openEditModal(note)}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </Button>
-              <Button size="sm">
+              <Button size="sm" onClick={() => openViewModal(note)}>
                 <BookOpen className="mr-2 h-4 w-4" />
                 View
               </Button>
@@ -66,6 +88,21 @@ const MyNotes = () => {
           </Card>
         ))}
       </div>
+
+      {/* View Note Modal */}
+      {selectedNote && (
+        <NoteModal note={selectedNote} isOpen={isViewModalOpen} onClose={closeModals} />
+      )}
+
+      {/* Edit Note Modal */}
+      {selectedNote && (
+        <EditNoteModal
+          note={selectedNote}
+          isOpen={isEditModalOpen}
+          onClose={closeModals}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 };
