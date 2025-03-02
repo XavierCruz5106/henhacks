@@ -4,7 +4,8 @@ export interface Note {
   _id?: ObjectId;
   title: string;
   content: string;
-  tags?: string[];
+  description: string;
+  tag: string;
   fileId?: ObjectId | null;
   createdAt: Date;
   updatedAt?: Date;
