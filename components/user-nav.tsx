@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser, UserButton, SignedOut, SignInButton, SignUpButton, useClerk } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +26,17 @@ import { TabsContent, Tabs } from "@/components/ui/tabs";
 
 export function UserNav() {
   const { setTheme, theme } = useTheme();
+  const { user, isSignedIn } = useUser();
+  const { signOut } = useClerk();
+
+  const handleLogOut = async () => {
+    await signOut();
+  };
+
+  if (!isSignedIn) {
+    return null; // Optionally handle the case when the user is not signed in
+  }
+
   const notifications = [
     {
       id: 1,
@@ -144,18 +156,16 @@ export function UserNav() {
             aria-label="User menu"
           >
             <Avatar className="h-9 w-9">
-              <AvatarImage src="/placeholder.svg" alt="@student" />
-              <AvatarFallback>AJ</AvatarFallback>
+              <AvatarImage src={user.imageUrl || "/placeholder.svg"} alt={user.firstName!} />
+              <AvatarFallback>{user.firstName?.[0]}{user.lastName?.[0]}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Alex Johnson</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                alex.johnson@university.edu
-              </p>
+              <p className="text-sm font-medium leading-none">{user.firstName} {user.lastName}</p>
+              <p className="text-xs leading-none text-muted-foreground">{user.primaryEmailAddress?.emailAddress}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -170,7 +180,7 @@ export function UserNav() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogOut}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>

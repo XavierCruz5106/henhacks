@@ -1,12 +1,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, BookOpen, CheckCircle, BrainCircuit, Users, FileText, Focus, ArrowRight } from "lucide-react"
+import { useUser } from "@clerk/nextjs";
 
 interface OverviewProps {
   setActiveTab: (tabId: string) => void;
 }
 
 export function Overview({ setActiveTab }: OverviewProps) {
+  const { user, isSignedIn } = useUser();
+
   const features = [
     {
       id: "planner",
@@ -56,7 +59,7 @@ export function Overview({ setActiveTab }: OverviewProps) {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card className="col-span-full">
         <CardHeader>
-          <CardTitle>Welcome back, Student!</CardTitle>
+          <CardTitle>Welcome back, {user?.firstName}!</CardTitle>
           <CardDescription>Here's your study overview for today.</CardDescription>
         </CardHeader>
         <CardContent>

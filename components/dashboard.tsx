@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { MainNav } from "@/components/main-nav"
 import { UserNav } from "@/components/user-nav"
@@ -10,14 +10,25 @@ import { StudySessions } from "@/components/study-sessions"
 import { HomeworkHelp } from "@/components/homework-help"
 import { DistractionManager } from "@/components/distraction-manager"
 import { Collaboration } from "@/components/collaboration"
-import { NotesOrganizer } from "@/components/notes-organizer"
+import { NotesOrganizer } from "@/components/Notes-organizer/notes-organizer"
 import { Overview } from "@/components/overview"
 import { MobileNav } from "@/components/mobile-nav"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { LayoutDashboard, Calendar, Bell, BookOpen, HelpCircle, Focus, Users, FileText } from "lucide-react"
+import { SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs"
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview")
+  const [mounted, setMounted] = useState(false);
+
+  // UseEffect to ensure the component only renders on the client side
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Prevents rendering until the component is mounted on the client
+  }
 
   const tabs = [
     { label: "Overview", icon: <LayoutDashboard className="mr-2 h-4 w-4" />, value: "overview" },
@@ -37,6 +48,10 @@ export default function Dashboard() {
           <MainNav className="hidden md:flex" />
           <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} />
           <div className="ml-auto flex items-center space-x-4">
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton />
+            </SignedOut>
             <UserNav />
           </div>
         </div>

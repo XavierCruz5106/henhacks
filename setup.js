@@ -9,7 +9,7 @@ async function createCollections(db) {
       validator: {
         $jsonSchema: {
           bsonType: 'object',
-          required: ['title', 'content', 'createdAt'],
+          required: ['title', 'content', 'createdAt', 'userId'],
           properties: {
             title: {
               bsonType: 'string',
@@ -38,6 +38,10 @@ async function createCollections(db) {
               bsonType: 'date',
               description: 'Last update date of the note',
             },
+            userId: {
+              bsonType: 'string',
+              description: 'ID of the user who created the note',
+            },
           },
         },
       },
@@ -65,6 +69,10 @@ async function createCollections(db) {
             createdAt: {
               bsonType: 'date',
               description: 'Creation date of the notification',
+            },
+            userId: {
+              bsonType: 'string',
+              description: 'ID of the user who created the note',
             },
           },
         },
