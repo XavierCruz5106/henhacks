@@ -48,7 +48,8 @@
     --ring: 36 33% 70%;
   }
 
-  .neon {
+  /* Custom themes - these need to include all variables */
+  [data-theme="pain"] {
     --background: 0 100% 20%;
     --foreground: 0 100% 100%;
     --card: 0 100% 30%;
@@ -70,7 +71,53 @@
     --ring: 180 100% 30%;
     --radius: 1rem;
   }
+
+  [data-theme="midnight-blue"] {
+    --background: 220 60% 7%;
+    --foreground: 220 40% 95%;
+    --card: 220 50% 10%;
+    --card-foreground: 220 40% 95%;
+    --popover: 220 50% 12%;
+    --popover-foreground: 220 40% 98%;
+    --primary: 220 85% 55%;
+    --primary-foreground: 220 40% 10%;
+    --secondary: 220 50% 20%;
+    --secondary-foreground: 220 40% 90%;
+    --muted: 220 30% 15%;
+    --muted-foreground: 220 40% 65%;
+    --accent: 220 90% 50%;
+    --accent-foreground: 220 40% 10%;
+    --destructive: 0 85% 50%;
+    --destructive-foreground: 220 40% 95%;
+    --border: 220 40% 20%;
+    --input: 220 40% 20%;
+    --ring: 220 80% 45%;
+    --radius: 1rem;
+  }
 }
+[data-theme="candy"] {
+  --background: 330 100% 97%;
+  --foreground: 330 100% 10%;
+  --card: 200 100% 95%;
+  --card-foreground: 330 100% 20%;
+  --popover: 330 100% 97%;
+  --popover-foreground: 330 100% 10%;
+  --primary: 0 85% 65%;
+  --primary-foreground: 0 100% 10%;
+  --secondary: 45 100% 75%;
+  --secondary-foreground: 45 100% 20%;
+  --muted: 280 100% 90%;
+  --muted-foreground: 280 100% 30%;
+  --accent: 170 100% 70%;
+  --accent-foreground: 170 100% 15%;
+  --destructive: 0 85% 50%;
+  --destructive-foreground: 330 100% 97%;
+  --border: 330 60% 80%;
+  --input: 330 60% 90%;
+  --ring: 200 90% 60%;
+  --radius: 1rem;
+}
+
 
 @layer base {
   * {
