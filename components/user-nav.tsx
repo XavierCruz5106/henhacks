@@ -30,7 +30,7 @@ export function UserNav() {
   const availableThemes = [
     { id: "midnight-blue", name: "Midnight Blue" },
     { id: "pain", name: "Pain" },
-    {id: "candy", name: "Candy"},
+    {id: "candy", name: "Candy"}, 
   ]
 
   // Notifications Data (Restored)
