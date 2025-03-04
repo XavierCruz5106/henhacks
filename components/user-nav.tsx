@@ -30,8 +30,14 @@ export function UserNav() {
   const availableThemes = [
     { id: "midnight-blue", name: "Midnight Blue" },
     { id: "pain", name: "Pain" },
-    {id: "candy", name: "Candy"}, 
-  ]
+    { id: "candy", name: "Candy" },
+    { id: "horrific-ugly", name: "Horrific Ugly" },
+    { id: "purple-blue", name: "Purple Blue" },
+    { id: "ruby-sapphire", name: "Ruby Sapphire" },
+    { id: "ruby-sapphire-inferno", name: "Ruby Sapphire Inferno" },
+    { id: "eye-melter", name: "Eye Melter" },
+    { id: "sleek-pink", name: "Sleek Pink" },
+  ];
 
   // Notifications Data (Restored)
   const notifications = [

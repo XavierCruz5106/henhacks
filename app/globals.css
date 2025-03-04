@@ -92,30 +92,74 @@
     --border: 220 40% 20%;
     --input: 220 40% 20%;
     --ring: 220 80% 45%;
-    --radius: 1rem;
   }
+
+  [data-theme="sleek-pink"] {
+    --background: 350 50% 95%; /* Soft baby pink background */
+    --foreground: 350 30% 20%; /* Dark muted pink text for readability */
+    --card: 350 50% 98%; /* Slightly lighter pastel pink card */
+    --card-foreground: 350 30% 25%; /* Soft grayish pink text */
+    --popover: 350 50% 97%; /* Light pastel pink popover */
+    --popover-foreground: 350 30% 20%; /* Dark muted pink for contrast */
+    --primary: 350 70% 75%; /* Warm pastel pink for primary elements */
+    --primary-foreground: 350 30% 10%; /* Deep muted rose for contrast */
+    --secondary: 350 50% 85%; /* Very light blush pink */
+    --secondary-foreground: 350 30% 25%; /* Muted mauve text */
+    --muted: 350 30% 90%; /* Muted light pink */
+    --muted-foreground: 350 30% 35%; /* Soft dusty pink text */
+    --accent: 350 80% 65%; /* Slightly more vibrant pastel pink for accents */
+    --accent-foreground: 350 30% 15%; /* Deeper mauve text */
+    --destructive: 0 85% 55%; /* Soft coral red for destructive actions */
+    --destructive-foreground: 350 30% 98%; /* Almost white text */
+    --border: 350 30% 85%; /* Subtle pastel pink borders */
+    --input: 350 30% 90%; /* Soft pink input fields */
+    --ring: 350 70% 75%; /* Pastel pink ring highlight */
 }
-[data-theme="candy"] {
-  --background: 330 100% 97%;
-  --foreground: 330 100% 10%;
-  --card: 200 100% 95%;
-  --card-foreground: 330 100% 20%;
-  --popover: 330 100% 97%;
-  --popover-foreground: 330 100% 10%;
-  --primary: 0 85% 65%;
-  --primary-foreground: 0 100% 10%;
-  --secondary: 45 100% 75%;
-  --secondary-foreground: 45 100% 20%;
-  --muted: 280 100% 90%;
-  --muted-foreground: 280 100% 30%;
-  --accent: 170 100% 70%;
-  --accent-foreground: 170 100% 15%;
-  --destructive: 0 85% 50%;
-  --destructive-foreground: 330 100% 97%;
-  --border: 330 60% 80%;
-  --input: 330 60% 90%;
-  --ring: 200 90% 60%;
-  --radius: 1rem;
+
+
+  [data-theme="horrific-ugly"] {
+    --background: 0 100% 60%; /* Bright, clashing neon yellow-green */
+    --foreground: 0 100% 20%; /* Dark, nearly black red */
+    --card: 60 100% 90%; /* Bright, neon yellow */
+    --card-foreground: 120 100% 0%; /* Bright lime green */
+    --popover: 330 100% 50%; /* Over-saturated pink */
+    --popover-foreground: 240 100% 50%; /* Bright purple */
+    --primary: 120 100% 50%; /* Neon green */
+    --primary-foreground: 0 100% 100%; /* Pure white */
+    --secondary: 30 100% 80%; /* Intense orange */
+    --secondary-foreground: 0 100% 0%; /* Bright green */
+    --muted: 210 100% 40%; /* Clashing light blue */
+    --muted-foreground: 60 100% 80%; /* Very bright yellow */
+    --accent: 180 100% 30%; /* Deep cyan */
+    --accent-foreground: 300 100% 70%; /* Hot pink */
+    --destructive: 0 100% 40%; /* Dark, in-your-face red */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 330 100% 40%; /* Bright red-pink */
+    --input: 240 100% 30%; /* Dark, over-saturated blue */
+    --ring: 50 100% 50%; /* Yellow-green */
+  }
+
+  [data-theme="candy"] {
+    --background: 330 100% 97%;
+    --foreground: 330 100% 10%;
+    --card: 200 100% 95%;
+    --card-foreground: 330 100% 20%;
+    --popover: 330 100% 97%;
+    --popover-foreground: 330 100% 10%;
+    --primary: 0 85% 65%;
+    --primary-foreground: 0 100% 10%;
+    --secondary: 45 100% 75%;
+    --secondary-foreground: 45 100% 20%;
+    --muted: 280 100% 90%;
+    --muted-foreground: 280 100% 30%;
+    --accent: 170 100% 70%;
+    --accent-foreground: 170 100% 15%;
+    --destructive: 0 85% 50%;
+    --destructive-foreground: 330 100% 97%;
+    --border: 330 60% 80%;
+    --input: 330 60% 90%;
+    --ring: 200 90% 60%;
+  }
 }
 
 
