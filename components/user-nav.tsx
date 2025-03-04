@@ -125,15 +125,6 @@ export function UserNav() {
     // Replace with a real siren sound file
     siren.loop = true; // Make it play on repeat
     siren.play();
-
-    // Stop the siren when the user selects another theme
-
-    const stopSiren = () => {
-      siren.pause();
-      siren.currentTime = 0;
-    };
-
-    return stopSiren;
   };
 
   return (
