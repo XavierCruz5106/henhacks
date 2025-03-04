@@ -69,7 +69,96 @@
     --border: 0 0% 80%;
     --input: 0 0% 80%;
     --ring: 180 100% 30%;
-    --radius: 1rem;
+  }
+
+  [data-theme="eye-melter"] {
+    --background: 120 100% 50%; /* Nuclear Slime Green */
+    --foreground: 300 100% 50%; /* Seizure Magenta */
+    --card: 30 100% 50%; /* Blinding Construction Cone Orange */
+    --card-foreground: 240 100% 50%; /* Laser Beam Blue */
+    --popover: 60 100% 50%; /* Vomit Yellow */
+    --popover-foreground: 0 100% 50%; /* Insane Clown Red */
+    --primary: 180 100% 50%; /* Cyberpunk Teal (but in the worst way) */
+    --primary-foreground: 270 100% 50%; /* Radioactive Purple */
+    --secondary: 0 100% 50%; /* Violent Red */
+    --secondary-foreground: 210 100% 50%; /* Blinding Cyan */
+    --muted: 300 100% 50%; /* Horrific Neon Pink */
+    --muted-foreground: 60 100% 50%; /* Highlighter Yellow */
+    --accent: 90 100% 50%; /* Toxic Waste Green */
+    --accent-foreground: 330 100% 50%; /* Stomach-Turning Magenta */
+    --destructive: 0 100% 55%; /* Flashing Alarm Red */
+    --destructive-foreground: 240 100% 50%; /* Eye-Gouging Blue */
+    --border: 195 100% 50%; /* Turquoise but Make It Ugly */
+    --input: 270 100% 50%; /* Blurple Disaster */
+    --ring: 30 100% 50%; /* Molten Lava Orange */
+  }
+
+
+  [data-theme="ruby-sapphire-inferno"] {
+    --background: 260 100% 5%; /* Deep, nearly black sapphire */
+    --foreground: 0 100% 95%; /* Eye-searing neon ruby */
+    --card: 260 90% 15%; /* Dark sapphire but still glowing */
+    --card-foreground: 0 100% 98%; /* Even brighter ruby text */
+    --popover: 260 95% 10%; /* Glowing sapphire popover */
+    --popover-foreground: 0 100% 95%; /* Super bright ruby text */
+    --primary: 0 100% 50%; /* MAXIMUM INTENSITY RUBY */
+    --primary-foreground: 260 100% 5%; /* Deepest sapphire contrast */
+    --secondary: 260 100% 40%; /* Neon electric sapphire */
+    --secondary-foreground: 0 100% 90%; /* Bright ruby for secondary */
+    --muted: 260 70% 25%; /* Still too intense for a muted color */
+    --muted-foreground: 260 80% 70%; /* Eye-bleeding electric blue */
+    --accent: 280 100% 60%; /* UV RADIATION PURPLE */
+    --accent-foreground: 260 100% 10%; /* Ultra dark sapphire */
+    --destructive: 0 100% 55%; /* ABSOLUTE DEATH RED */
+    --destructive-foreground: 260 100% 98%; /* Neon blue on neon red (why not?) */
+    --border: 260 100% 30%; /* Electric border */
+    --input: 260 100% 20%; /* Still glowing */
+    --ring: 0 100% 60%; /* BLOOD RED NEON OUTLINE */
+  }
+
+
+  [data-theme="ruby-sapphire"] {
+    --background: 260 80% 10%; /* Deep sapphire-blue background */
+    --foreground: 0 80% 90%; /* Light ruby-red text */
+    --card: 260 70% 20%; /* Darker sapphire card background */
+    --card-foreground: 0 80% 95%; /* Light ruby card text */
+    --popover: 260 75% 15%; /* Dark sapphire popover background */
+    --popover-foreground: 0 80% 90%; /* Light ruby text in popovers */
+    --primary: 0 85% 50%; /* Bold ruby red for primary elements */
+    --primary-foreground: 260 100% 10%; /* Dark sapphire for primary text */
+    --secondary: 260 70% 40%; /* Soft amethyst purple for secondary elements */
+    --secondary-foreground: 0 80% 90%; /* Light ruby text on secondary elements */
+    --muted: 260 40% 20%; /* Muted dark sapphire for less prominent elements */
+    --muted-foreground: 260 40% 60%; /* Muted text color */
+    --accent: 280 85% 60%; /* Vibrant amethyst purple accent */
+    --accent-foreground: 260 40% 10%; /* Dark accent text */
+    --destructive: 0 85% 50%; /* Ruby red for destructive actions */
+    --destructive-foreground: 260 40% 95%; /* Light text for destructive actions */
+    --border: 260 50% 25%; /* Darker border for separation */
+    --input: 260 50% 20%; /* Slightly darker input field background */
+    --ring: 0 85% 50%; /* Ruby-red highlight ring color when focused */
+  }
+
+  [data-theme="purple-blue"] {
+    --background: 240 60% 10%; /* Deep purple-blue background */
+    --foreground: 240 40% 90%; /* Light text color */
+    --card: 240 60% 20%; /* Darker purple card background */
+    --card-foreground: 240 40% 95%; /* Light card text */
+    --popover: 240 50% 15%; /* Slightly darker popover background */
+    --popover-foreground: 240 40% 90%; /* Light text in popovers */
+    --primary: 240 80% 50%; /* Bold purple-blue for primary elements */
+    --primary-foreground: 240 100% 10%; /* Dark purple for primary text */
+    --secondary: 240 60% 40%; /* Soft blue for secondary elements */
+    --secondary-foreground: 240 40% 90%; /* Light text on secondary elements */
+    --muted: 240 30% 20%; /* Muted dark purple for less prominent elements */
+    --muted-foreground: 240 40% 60%; /* Muted text color */
+    --accent: 240 85% 60%; /* Vibrant accent color (light blue) */
+    --accent-foreground: 240 40% 10%; /* Dark accent text */
+    --destructive: 0 85% 50%; /* Red for destructive actions */
+    --destructive-foreground: 240 40% 95%; /* Light text for destructive actions */
+    --border: 240 40% 25%; /* Darker border for separation */
+    --input: 240 40% 20%; /* Slightly darker input field background */
+    --ring: 240 60% 50%; /* Highlight ring color when focused */
   }
 
   [data-theme="midnight-blue"] {
@@ -92,32 +181,52 @@
     --border: 220 40% 20%;
     --input: 220 40% 20%;
     --ring: 220 80% 45%;
-    --radius: 1rem;
+  }
+
+  [data-theme="horrific-ugly"] {
+    --background: 0 100% 60%; /* Bright, clashing neon yellow-green */
+    --foreground: 0 100% 20%; /* Dark, nearly black red */
+    --card: 60 100% 90%; /* Bright, neon yellow */
+    --card-foreground: 120 100% 0%; /* Bright lime green */
+    --popover: 330 100% 50%; /* Over-saturated pink */
+    --popover-foreground: 240 100% 50%; /* Bright purple */
+    --primary: 120 100% 50%; /* Neon green */
+    --primary-foreground: 0 100% 100%; /* Pure white */
+    --secondary: 30 100% 80%; /* Intense orange */
+    --secondary-foreground: 0 100% 0%; /* Bright green */
+    --muted: 210 100% 40%; /* Clashing light blue */
+    --muted-foreground: 60 100% 80%; /* Very bright yellow */
+    --accent: 180 100% 30%; /* Deep cyan */
+    --accent-foreground: 300 100% 70%; /* Hot pink */
+    --destructive: 0 100% 40%; /* Dark, in-your-face red */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 330 100% 40%; /* Bright red-pink */
+    --input: 240 100% 30%; /* Dark, over-saturated blue */
+    --ring: 50 100% 50%; /* Yellow-green */
+  }
+
+  [data-theme="candy"] {
+    --background: 330 100% 97%;
+    --foreground: 330 100% 10%;
+    --card: 200 100% 95%;
+    --card-foreground: 330 100% 20%;
+    --popover: 330 100% 97%;
+    --popover-foreground: 330 100% 10%;
+    --primary: 0 85% 65%;
+    --primary-foreground: 0 100% 10%;
+    --secondary: 45 100% 75%;
+    --secondary-foreground: 45 100% 20%;
+    --muted: 280 100% 90%;
+    --muted-foreground: 280 100% 30%;
+    --accent: 170 100% 70%;
+    --accent-foreground: 170 100% 15%;
+    --destructive: 0 85% 50%;
+    --destructive-foreground: 330 100% 97%;
+    --border: 330 60% 80%;
+    --input: 330 60% 90%;
+    --ring: 200 90% 60%;
   }
 }
-[data-theme="candy"] {
-  --background: 330 100% 97%;
-  --foreground: 330 100% 10%;
-  --card: 200 100% 95%;
-  --card-foreground: 330 100% 20%;
-  --popover: 330 100% 97%;
-  --popover-foreground: 330 100% 10%;
-  --primary: 0 85% 65%;
-  --primary-foreground: 0 100% 10%;
-  --secondary: 45 100% 75%;
-  --secondary-foreground: 45 100% 20%;
-  --muted: 280 100% 90%;
-  --muted-foreground: 280 100% 30%;
-  --accent: 170 100% 70%;
-  --accent-foreground: 170 100% 15%;
-  --destructive: 0 85% 50%;
-  --destructive-foreground: 330 100% 97%;
-  --border: 330 60% 80%;
-  --input: 330 60% 90%;
-  --ring: 200 90% 60%;
-  --radius: 1rem;
-}
-
 
 @layer base {
   * {
