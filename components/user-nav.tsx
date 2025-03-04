@@ -30,6 +30,7 @@ export function UserNav() {
   const availableThemes = [
     { id: "midnight-blue", name: "Midnight Blue" },
     { id: "pain", name: "Pain" },
+<<<<<<< Updated upstream
     { id: "candy", name: "Candy" },
     { id: "horrific-ugly", name: "Horrific Ugly" },
     { id: "purple-blue", name: "Purple Blue" },
@@ -38,6 +39,10 @@ export function UserNav() {
     { id: "eye-melter", name: "Eye Melter" },
     { id: "sleek-pink", name: "Sleek Pink" },
   ];
+=======
+    {id: "candy", name: "Candy"},
+  ]
+>>>>>>> Stashed changes
 
   // Notifications Data (Restored)
   const notifications = [
