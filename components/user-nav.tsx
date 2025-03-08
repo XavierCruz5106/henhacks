@@ -24,10 +24,12 @@ import {
   CheckCircle2,
   Clock,
   BookOpen,
+  Trash,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "next-themes";
 import Dialog from "./ui/dialog";
+import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 
 export function UserNav() {
   const { setTheme, theme, resolvedTheme } = useTheme();
@@ -60,8 +62,6 @@ export function UserNav() {
     {
       id: 1,
       icon: AlertCircle,
-      iconBg: "bg-red-100",
-      color: "text-red-500",
       iconBg: "bg-destructive/10",
       color: "text-destructive",
       title: "Calculus Exam Reminder",
@@ -71,8 +71,6 @@ export function UserNav() {
     {
       id: 2,
       icon: Clock,
-      iconBg: "bg-blue-100",
-      color: "text-blue-500",
       iconBg: "bg-primary/10",
       color: "text-primary",
       title: "Study Session Reminder",
