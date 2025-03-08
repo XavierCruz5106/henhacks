@@ -36,6 +36,18 @@ export function UserNav() {
   if (!isSignedIn) {
     return null; // Optionally handle the case when the user is not signed in
   }
+  // Available themes with display names
+  const availableThemes = [
+    { id: "midnight-blue", name: "Midnight Blue" },
+    { id: "pain", name: "Pain" },
+    { id: "candy", name: "Candy" },
+    { id: "horrific-ugly", name: "Horrific Ugly" },
+    { id: "purple-blue", name: "Purple Blue" },
+    { id: "ruby-sapphire", name: "Ruby Sapphire" },
+    { id: "ruby-sapphire-inferno", name: "Ruby Sapphire Inferno" },
+    { id: "eye-melter", name: "Eye Melter" },
+    { id: "sleek-pink", name: "Sleek Pink" },
+  ];
 
   const notifications = [
     {
