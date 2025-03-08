@@ -38,6 +38,10 @@ export function UserNav() {
   const [mounted, setMounted] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
+  if (!isSignedIn) {
+    return null; // Optionally handle the case when the user is not signed in
+  }
+
   // Available themes with display names
   const availableThemes = [
     { id: "midnight-blue", name: "Midnight Blue" },
@@ -48,6 +52,7 @@ export function UserNav() {
     { id: "ruby-sapphire", name: "Ruby Sapphire" },
     { id: "ruby-sapphire-inferno", name: "Ruby Sapphire Inferno" },
     { id: "eye-melter", name: "Eye Melter" },
+    { id: "sleek-pink", name: "Sleek Pink" },
   ];
 
   // Notifications Data (Restored)
@@ -57,6 +62,8 @@ export function UserNav() {
       icon: AlertCircle,
       iconBg: "bg-red-100",
       color: "text-red-500",
+      iconBg: "bg-destructive/10",
+      color: "text-destructive",
       title: "Calculus Exam Reminder",
       time: "1h ago",
       description: "Your exam is in 5 days. Start preparing now!",
@@ -66,6 +73,8 @@ export function UserNav() {
       icon: Clock,
       iconBg: "bg-blue-100",
       color: "text-blue-500",
+      iconBg: "bg-primary/10",
+      color: "text-primary",
       title: "Study Session Reminder",
       time: "3h ago",
       description: "Your Physics study session is scheduled for 1:00 PM today.",
@@ -82,8 +91,8 @@ export function UserNav() {
     {
       id: 4,
       icon: BookOpen,
-      iconBg: "bg-yellow-100",
-      color: "text-yellow-500",
+      iconBg: "bg-primary/10",
+      color: "text-primary",
       title: "New Assignment Added",
       time: "2 days ago",
       description: "Physics Problem Set #4 has been added to your planner.",
@@ -163,6 +172,43 @@ export function UserNav() {
         <DropdownMenuContent className="w-80" align="end">
           <DropdownMenuLabel className="font-normal">
             Notifications
+            <Tabs defaultValue="all">
+              <TabsContent value="all" className="space-y-3 mt-0  pr-4">
+                {notifications.map((notification) => (
+                  <div
+                    key={notification.id}
+                    className="flex items-center space-x-4 rounded-lg border p-3 transition-colors hover:bg-muted/50"
+                  >
+                    <div
+                      className={`rounded-full p-2 flex-shrink-0 ${notification.iconBg}`}>
+                    <notification.icon
+                      className={`h-5 w-5 ${notification.color}`}
+                    />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium leading-none">
+                          {notification.title}
+                        </p>
+                        <Badge variant="outline" className="text-xs">
+                          {notification.time}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {notification.description}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Delete notification"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </TabsContent>
+            </Tabs>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {notifications.map((notification) => (

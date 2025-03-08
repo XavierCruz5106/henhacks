@@ -1,13 +1,109 @@
 "use client"
 
-import { useState } from "react"
+import { GoogleGenerativeAI } from "@google/generative-ai"
+import { useState, useRef, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { MessageSquare, Camera, Mic, Send, ImageIcon, FileText, ThumbsUp, ThumbsDown } from "lucide-react"
+import { MessageSquare, Camera, Send, ImageIcon, FileText, Reply } from "lucide-react"
 
 export function HomeworkHelp() {
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [chatHistory, setChatHistory] = useState<Array<{ type: string, content: string, timestamp: string, replyTo?: string }>>([
+    { 
+      type: "assistant", 
+      content: "Hello! I'm your AI homework assistant. How can I help you today? 😊", 
+      timestamp: new Date().toISOString() 
+    },
+  ])
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [replyingTo, setReplyingTo] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const chatSessionRef = useRef<ReturnType<typeof model.startChat> | null>(null)
+
+  const genAI = new GoogleGenerativeAI("AIzaSyDqa80UWZClAHQ8Y-6i5ljad_kxrtno1DM")
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+
+  useEffect(() => {
+    if (!chatSessionRef.current) {
+      chatSessionRef.current = model.startChat({ history: [] })
+    }
+  }, [])
+
+  const formatAIResponse = (text: string) => {
+    // Remove unnecessary line breaks and repetitive phrases
+    return text.replace(/\n+/g, "\n").trim();
+  };
+
+  const handleSend = async () => {
+    if (!message.trim() || isProcessing) return;
+
+    const userMessage = {
+      type: "user",
+      content: message,
+      timestamp: new Date().toISOString(),
+      replyTo: replyingTo || undefined,
+    };
+
+    const newHistory = [...chatHistory, userMessage];
+    setChatHistory(newHistory);
+    setMessage("");
+    setReplyingTo(null);
+    setIsProcessing(true);
+
+    try {
+      if (!chatSessionRef.current) {
+        chatSessionRef.current = model.startChat({ history: [] });
+      }
+
+      const result = await chatSessionRef.current.sendMessage(message);
+      const response = await result.response;
+      const aiResponse = response.text();
+
+      const formattedResponse = formatAIResponse(aiResponse);
+
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          type: "assistant",
+          content: formattedResponse,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+    } catch (error) {
+      console.error("AI Error:", error);
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          type: "error",
+          content: "Hmm, I'm having a bit of trouble right now. Can you try again? 😅",
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+    }
+
+    setIsProcessing(false);
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setIsProcessing(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setMessage((prev) => `${prev}\n[Uploaded Image Content]:\nSimulated text from image`);
+    } catch (error) {
+      console.error("Image Upload Error:", error);
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          type: "assistant",
+          content: "🚫 Error: I couldn't process the image. Please try again.",
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+    }
+    setIsProcessing(false);
+  };
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
@@ -18,125 +114,75 @@ export function HomeworkHelp() {
         </CardHeader>
         <CardContent className="p-0">
           <div className="border-t border-b h-[400px] overflow-y-auto p-4 space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
-                <MessageSquare className="h-4 w-4 text-primary" />
+            {chatHistory.map((msg, index) => (
+              <div key={index} className={`flex items-start gap-3 ${msg.type === "user" ? "justify-end" : ""}`}>
+                {msg.type !== "user" && (
+                  <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
+                    <MessageSquare className="h-4 w-4 text-primary" />
+                  </div>
+                )}
+                <div className={`rounded-lg p-3 text-sm max-w-[80%] ${
+                  msg.type === "user" ? "bg-primary text-primary-foreground" : 
+                  msg.type === "error" ? "bg-destructive text-destructive-foreground" : "bg-muted"
+                }`}>
+                  {msg.replyTo && (
+                    <div className="text-xs font-bold text-primary mb-2">
+                      Replying to: {chatHistory.find(m => m.timestamp === msg.replyTo)?.content}
+                    </div>
+                  )}
+                  <div className="whitespace-pre-wrap">
+                    {msg.content}
+                  </div>
+                </div>
               </div>
-              <div className="rounded-lg bg-muted p-3 text-sm">
-                Hello! I'm your AI homework assistant. How can I help you today?
-              </div>
-            </div>
-            <div className="flex items-start gap-3 justify-end">
-              <div className="rounded-lg bg-primary text-primary-foreground p-3 text-sm">
-                I need help with a calculus problem about finding the derivative of f(x) = x^3 * sin(x)
-              </div>
-              <div className="rounded-full bg-primary p-2 h-8 w-8 flex items-center justify-center">
-                <MessageSquare className="h-4 w-4 text-primary-foreground" />
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
-                <MessageSquare className="h-4 w-4 text-primary" />
-              </div>
-              <div className="space-y-3">
+            ))}
+            {isProcessing && (
+              <div className="flex items-start gap-3">
+                <div className="rounded-full bg-primary/10 p-2 h-8 w-8 flex items-center justify-center">
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
-                  To find the derivative of f(x) = x³ * sin(x), we need to use the product rule:
-                  <br />
-                  <br />
-                  If f(x) = g(x) * h(x), then f'(x) = g'(x) * h(x) + g(x) * h'(x)
-                  <br />
-                  <br />
-                  Let's set g(x) = x³ and h(x) = sin(x)
-                  <br />
-                  <br />
-                  g'(x) = 3x²
-                  <br />
-                  h'(x) = cos(x)
-                  <br />
-                  <br />
-                  So, f'(x) = 3x² * sin(x) + x³ * cos(x)
-                </div>
-                <div className="flex items-center justify-end space-x-2">
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <ThumbsUp className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <ThumbsDown className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center space-x-2">
+                    <span>Thinking</span>
+                    <div className="flex space-x-1">
+                      <div className="h-1 w-1 bg-primary rounded-full animate-bounce delay-100"></div>
+                      <div className="h-1 w-1 bg-primary rounded-full animate-bounce delay-200"></div>
+                      <div className="h-1 w-1 bg-primary rounded-full animate-bounce delay-300"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </CardContent>
         <CardFooter className="flex items-center gap-2 pt-4">
-          <Button variant="outline" size="icon">
-            <Camera className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon">
-            <ImageIcon className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon">
-            <Mic className="h-4 w-4" />
-          </Button>
           <Textarea
-            placeholder="Ask your question..."
+            placeholder={replyingTo ? "Reply to this message..." : "Ask your question..."}
             className="flex-1 min-h-10"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+            disabled={isProcessing}
           />
-          <Button size="icon">
+          <Button size="icon" onClick={handleSend} disabled={isProcessing}>
             <Send className="h-4 w-4" />
           </Button>
         </CardFooter>
       </Card>
-
-      <div className="col-span-1 space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Scan Homework</CardTitle>
-            <CardDescription>Upload or scan your homework for instant help</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center">
-              <Camera className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground text-center">
-                Take a photo or upload an image of your homework
-              </p>
-              <Button className="mt-4">Upload Image</Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Questions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center space-x-3 rounded-lg border p-3">
-              <FileText className="h-5 w-5 text-primary" />
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">Calculus: Derivatives</p>
-                <p className="text-xs text-muted-foreground">Yesterday</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 rounded-lg border p-3">
-              <FileText className="h-5 w-5 text-primary" />
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">Physics: Momentum</p>
-                <p className="text-xs text-muted-foreground">2 days ago</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 rounded-lg border p-3">
-              <FileText className="h-5 w-5 text-primary" />
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">Chemistry: Balancing Equations</p>
-                <p className="text-xs text-muted-foreground">3 days ago</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Scan Homework</CardTitle>
+          <CardDescription>Upload or scan your homework for instant help</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center">
+            <Camera className="h-8 w-8 text-muted-foreground mb-2" />
+            <p className="text-sm text-muted-foreground text-center">Take a photo or upload an image of your homework</p>
+            <input type="file" accept="image/*" ref={fileInputRef} onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0])} className="hidden" />
+            <Button className="mt-4" onClick={() => fileInputRef.current?.click()}>Upload Image</Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
-
