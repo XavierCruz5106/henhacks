@@ -22,15 +22,15 @@ import {
   Plus,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import AgoraRTC from "agora-rtc-sdk-ng";
+import AgoraRTC, { IAgoraRTCRemoteUser, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
 import StudyBuddies from "./StudyBuddies";
 
 export function Collaboration() {
   const [AppID, setAppID] = useState(""); // Replace with your Agora App ID
   const [token, setToken] = useState(null); // Replace with your Agora Token or null for no token
-  const [activeSession, setActiveSession] = useState(null);
-  const [localTracks, setLocalTracks] = useState({ videoTrack: null, audioTrack: null });
-  const [remoteUsers, setRemoteUsers] = useState([]);
+  const [activeSession, setActiveSession] = useState<{ id: string, name: string, channel: string } | null>(null);
+  const [localTracks, setLocalTracks] = useState<{ videoTrack: any, audioTrack: any }>({ videoTrack: null, audioTrack: null });
+  const [remoteUsers, setRemoteUsers] = useState<{ user: IAgoraRTCRemoteUser; videoTrack: IRemoteVideoTrack | undefined; }[]>([]);
   const client = useRef(AgoraRTC.createClient({ codec: "vp8", mode: "rtc" }));
   const localVideoRef = useRef(null);
 
@@ -90,7 +90,9 @@ export function Collaboration() {
             setRemoteUsers((prevUsers) => [...prevUsers, { user, videoTrack: user.videoTrack }]);
           }
           if (mediaType === "audio") {
-            user.audioTrack.play();
+            if (user.audioTrack) {
+              user.audioTrack.play();
+            }
           }
         });
 
@@ -119,7 +121,7 @@ export function Collaboration() {
     };
   }, [activeSession, AppID, token, localTracks]);
 
-  const handleJoinSession = (group) => {
+  const handleJoinSession = (group: any) => {
     setActiveSession(group);
   };
 
@@ -144,7 +146,7 @@ export function Collaboration() {
               <div className="grid grid-cols-2 gap-4">
                 {remoteUsers.map(({ user, videoTrack }) => (
                   <div key={user.uid} className="aspect-video bg-black">
-                    {videoTrack && <div ref={(el) => videoTrack.play(el)} />}
+                    {videoTrack && <div ref={(el) => { if (el) videoTrack.play(el); }} />}
                   </div>
                 ))}
               </div>
